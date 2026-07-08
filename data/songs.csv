@@ -9,3 +9,11 @@ id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
 8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
 9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
 10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
+11,City Lights Anthem,Bassline Kid,hip hop,energetic,0.85,95,0.70,0.88,0.08
+12,Quiet Hall,Elena Voss,classical,peaceful,0.15,60,0.55,0.20,0.97
+13,Old Porch Stories,Willow Creek,folk,nostalgic,0.30,85,0.60,0.40,0.88
+14,Island Sway,Sunny Tide,reggae,playful,0.55,92,0.78,0.75,0.45
+15,Neon Pulse Rave,DJ Kinetic,EDM,euphoric,0.97,128,0.82,0.90,0.03
+16,Slow Dance With You,Hazel Row,country,romantic,0.40,82,0.68,0.50,0.65
+17,Iron Fury,Blacksteel,metal,angry,0.98,165,0.25,0.35,0.02
+18,Rainy Window Blues,Marcus Lowe,R&B,sad,0.25,68,0.20,0.35,0.55
