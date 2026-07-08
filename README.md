@@ -11,7 +11,7 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
+This version (VibeMatch) takes a short taste profile — favorite genre, favorite mood, target energy, and whether you like acoustic songs — and scores every song in a small catalog against it. It returns the top 5 matches with a plain-English reason for each one, so you can see exactly why a song got picked.
 
 ---
 
@@ -76,51 +76,116 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
+Ran `python -m src.main` against three distinct taste profiles defined in `src/main.py`:
+
+**High-Energy Pop** (`favorite_genre=pop, favorite_mood=happy, target_energy=0.9, likes_acoustic=False`)
 
 ```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
-```
-
-Loading songs from data/songs.csv...
-
-Top 5 Recommendations
-=====================
+Top 5 Recommendations — High-Energy Pop
+=======================================
 
 1. Sunrise City  (by Neon Echo)
-   Score: 5.30
+   Score: 5.24
      - genre match (+2.0)
      - mood match (+1.5)
-     - energy closeness (+0.98)
+     - energy closeness (+0.92)
      - acoustic match (+0.82)
 
 2. Gym Hero  (by Max Pulse)
-   Score: 3.82
+   Score: 3.92
      - genre match (+2.0)
-     - energy closeness (+0.87)
+     - energy closeness (+0.97)
      - acoustic match (+0.95)
 
 3. Rooftop Lights  (by Indigo Parade)
-   Score: 3.11
+   Score: 3.01
      - mood match (+1.5)
-     - energy closeness (+0.96)
+     - energy closeness (+0.86)
      - acoustic match (+0.65)
 
-4. City Lights Anthem  (by Bassline Kid)
+4. Neon Pulse Rave  (by DJ Kinetic)
+   Score: 1.90
+     - energy closeness (+0.93)
+     - acoustic match (+0.97)
+
+5. Iron Fury  (by Blacksteel)
+   Score: 1.90
+     - energy closeness (+0.92)
+     - acoustic match (+0.98)
+```
+
+**Chill Lofi** (`favorite_genre=lofi, favorite_mood=chill, target_energy=0.3, likes_acoustic=True`)
+
+```
+Top 5 Recommendations — Chill Lofi
+==================================
+
+1. Library Rain  (by Paper Lanterns)
+   Score: 5.31
+     - genre match (+2.0)
+     - mood match (+1.5)
+     - energy closeness (+0.95)
+     - acoustic match (+0.86)
+
+2. Midnight Coding  (by LoRoom)
+   Score: 5.09
+     - genre match (+2.0)
+     - mood match (+1.5)
+     - energy closeness (+0.88)
+     - acoustic match (+0.71)
+
+3. Focus Flow  (by LoRoom)
+   Score: 3.68
+     - genre match (+2.0)
+     - energy closeness (+0.90)
+     - acoustic match (+0.78)
+
+4. Spacewalk Thoughts  (by Orbit Bloom)
+   Score: 3.40
+     - mood match (+1.5)
+     - energy closeness (+0.98)
+     - acoustic match (+0.92)
+
+5. Old Porch Stories  (by Willow Creek)
+   Score: 1.88
+     - energy closeness (+1.00)
+     - acoustic match (+0.88)
+```
+
+**Deep Intense Rock** (`favorite_genre=rock, favorite_mood=intense, target_energy=0.9, likes_acoustic=False`)
+
+```
+Top 5 Recommendations — Deep Intense Rock
+=========================================
+
+1. Storm Runner  (by Voltline)
+   Score: 5.39
+     - genre match (+2.0)
+     - mood match (+1.5)
+     - energy closeness (+0.99)
+     - acoustic match (+0.90)
+
+2. Gym Hero  (by Max Pulse)
+   Score: 3.42
+     - mood match (+1.5)
+     - energy closeness (+0.97)
+     - acoustic match (+0.95)
+
+3. Neon Pulse Rave  (by DJ Kinetic)
+   Score: 1.90
+     - energy closeness (+0.93)
+     - acoustic match (+0.97)
+
+4. Iron Fury  (by Blacksteel)
+   Score: 1.90
+     - energy closeness (+0.92)
+     - acoustic match (+0.98)
+
+5. City Lights Anthem  (by Bassline Kid)
    Score: 1.87
      - energy closeness (+0.95)
      - acoustic match (+0.92)
-
-5. Neon Pulse Rave  (by DJ Kinetic)
-   Score: 1.80
-     - energy closeness (+0.83)
-     - acoustic match (+0.97)
-
+```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
 
@@ -134,6 +199,8 @@ Use this section to document the experiments you ran. For example:
 - What happened when you added tempo or valence to the score
 - How did your system behave for different types of users
 
+I ran three very different profiles (High-Energy Pop, Chill Lofi, Deep Intense Rock) and a "niche" profile with a genre/mood that isn't in the catalog at all. The opposite-vibe profiles (pop vs lofi) shared zero songs in their top 5, which felt right. The niche profile was the interesting one — with no genre/mood to match, every song scored about the same, so the "recommendations" were basically noise instead of a real match. I also noticed the same song ("Gym Hero") kept showing up across different genre profiles just because it's high energy and not acoustic — it was getting partial credit even when the genre or mood didn't fully match.
+
 ---
 
 ## Limitations and Risks
@@ -145,6 +212,8 @@ Examples:
 - It only works on a tiny catalog
 - It does not understand lyrics or language
 - It might over favor one genre or mood
+
+Only 18 songs total, and most genres only have one song each, so there's not much to actually choose from once you narrow by genre. It can't tell "pop" and "indie pop" are related — exact match only, so close-but-not-exact genres get zero credit. Genre and mood are weighted the heaviest, so a song that nails those two can beat out one that's a much better overall fit. Users with a favorite genre/mood not in the catalog basically get random-feeling picks instead of an honest "nothing really matches" answer.
 
 You will go deeper on this in your model card.
 
@@ -160,6 +229,10 @@ Write 1 to 2 paragraphs here about what you learned:
 
 - about how recommenders turn data into predictions
 - about where bias or unfairness could show up in systems like this
+
+Building this showed me a recommender is really just a math formula, it's adding up points based on weights someone picked, and whichever song has the most points wins. There's no real "understanding" of the music happening, just comparisons on a handful of numbers and labels.
+
+Bias exist too. It's not that the code is unfair on purpose, it's that the catalog has way more pop and lofi songs than anything else, and genre happens to be weighted the heaviest. So people who like popular genres get well-matched picks, and people with niche taste get leftovers. The same thing probably happens on real apps: whatever's most common in the data and whatever the engineers decided to weight most ends up shaping what you see, whether that was the intent or not.
 
 
 

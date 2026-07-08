@@ -10,19 +10,20 @@
 
 **What task did you give the agent?**
 
-<!-- Describe the goal you asked the agent to accomplish -->
+I asked Claude to implement the actual scoring logic (the TODOs in `recommender.py`), get the CLI running end to end, clean up the terminal output, and then help me test it against a few different taste profiles and write up what I found in the README and model card.
 
 **Prompts used:**
 
-<!-- Paste the key prompts you gave the agent -->
+"Walk me through the tradeoffs between linear  and Gaussian for scoring numerical features like energy"
+"If I wanted to let related genres (like 'pop' and 'indie pop') partially match instead of requiring an exact string match, how would I redesign the genre scoring?"
 
 **What did the agent generate or change?**
 
-<!-- List the files edited, code generated, or commands run -->
+It filled in `load_songs`, `score_song`, `recommend_songs`, and the `Recommender` class in `src/recommender.py`; added three test profiles to `src/main.py` and reformatted the terminal output;
 
 **What did you verify or fix manually?**
 
-<!-- Describe anything the agent got wrong or that required human review -->
+I actually ran `python -m src.main` and `pytest` myself rather than trusting the agent's word that things worked. That's how we caught two real bugs: `main.py` was importing `recommender` instead of `src.recommender` so the documented run command crashed, and plain `pytest` failed with a `ModuleNotFoundError` because it wasn't adding the project root to the path (fixed with a `pytest.ini`). I also had it re-run the bias analysis with real numbers pulled from the catalog instead of a made-up example.
 
 ---
 
